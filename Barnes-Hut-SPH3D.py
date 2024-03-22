@@ -194,17 +194,10 @@ class Simulator(Simulator):
                         for k in range(2):
                             f += self.calculate_net_force(atom, tree[0][i][j][k])
         return f
-    
-    def get_region_size(self):
-        region_size = 0
-        for atom in self.world.atoms:
-            for p in atom.pos.list():
-                region_size = max(region_size, 2*abs(p))
-        return region_size
                 
     def main(self):
-        region_size = self.get_region_size()
-        tree = self.build_tree(self.world.atoms, -region_size/2, -region_size/2, -region_size/2, region_size)
+        self.update_region_size()
+        tree = self.build_tree(self.world.atoms, -self.region_size/2, -self.region_size/2, -self.region_size/2, self.region_size)
         x_ = []
         v_ = []
         self.make_grid()
@@ -243,7 +236,7 @@ if __name__ == '__main__':
 
     screen = pg.display.set_mode((width, height))
     render = Render(screen, width, height, depth, angle=(1,0,0), omega = (0,0,0))
-    clock = pg.time.Clock()
+    #clock = pg.time.Clock()
 
     black = pg.Color('black')
     white = pg.Color('white')
@@ -349,11 +342,11 @@ if __name__ == '__main__':
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
-        clock.tick(100)
+        # clock.tick(100)
         pg.display.update()
         
         # you need 'images/Barnes_Hut_demo_1' directory path
-        #simulator.save_screen('images/Barnes_Hut_SPH_demo_1')
+        #simulator.save_screen('images/Barnes_Hut_SPH3D')
         
         # if t > 10:
         #     break
